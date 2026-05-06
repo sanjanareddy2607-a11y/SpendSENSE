@@ -1,24 +1,19 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
-
 import appCss from "../styles.css?url";
+import { ExpenseProvider } from "@/lib/expense-store";
+import { Sidebar, MobileNav } from "@/components/app/Sidebar";
+import { TopBar } from "@/components/app/TopBar";
+import { AddExpenseFAB } from "@/components/app/AddExpense";
+import { Toaster } from "sonner";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Go home
-          </Link>
-        </div>
+    <div className="flex min-h-screen items-center justify-center px-4">
+      <div className="glass-strong rounded-2xl p-8 max-w-md text-center">
+        <h1 className="text-7xl font-bold text-gradient">404</h1>
+        <h2 className="mt-2 text-xl font-semibold">Page not found</h2>
+        <p className="mt-2 text-sm text-muted-foreground">This page doesn't exist.</p>
+        <Link to="/" className="inline-block mt-5 px-5 py-2.5 rounded-xl bg-gradient-brand text-white font-medium">Go home</Link>
       </div>
     </div>
   );
@@ -29,20 +24,18 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "FinCommand — Student Finance Command Center" },
+      { name: "description", content: "A futuristic, data-driven expense tracker for students. Track spending, set budgets, and predict your financial future." },
+      { property: "og:title", content: "FinCommand — Student Finance Command Center" },
+      { property: "og:description", content: "Track spending, set budgets, and predict your financial future." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" },
     ],
   }),
   shellComponent: RootShell,
@@ -53,10 +46,12 @@ export const Route = createRootRoute({
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
+      <head><HeadContent /></head>
       <body>
+        <style>{`
+          @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+          @keyframes slideUp { from { opacity: 0; transform: translateY(12px) } to { opacity: 1; transform: translateY(0) } }
+        `}</style>
         {children}
         <Scripts />
       </body>
@@ -65,5 +60,18 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
-  return <Outlet />;
+  return (
+    <ExpenseProvider>
+      <div className="min-h-screen flex">
+        <Sidebar />
+        <main className="flex-1 min-w-0 p-4 md:p-6 pb-28 md:pb-6 max-w-[1500px] mx-auto w-full">
+          <TopBar />
+          <Outlet />
+        </main>
+        <MobileNav />
+        <AddExpenseFAB />
+        <Toaster position="top-center" richColors />
+      </div>
+    </ExpenseProvider>
+  );
 }
