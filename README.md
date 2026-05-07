@@ -47,5 +47,6 @@ Future Improvements
 Possible improvements include authentication, multi user support, and more advanced financial insights. The current version focuses on simplicity and reliability.
 
 live deployed link through lovable :- https://spendsenseeee.lovable.app
-github repository link:-
+
+github repository link:-https://github.com/sanjanareddy2607-a11y/SpendSENSE
 
